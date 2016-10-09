@@ -149,6 +149,7 @@ namespace HoloToolkit.Unity
 
             navigationRecognizer = new GestureRecognizer();
             navigationRecognizer.SetRecognizableGestures(GestureSettings.NavigationX);
+            navigationRecognizer.SetRecognizableGestures(GestureSettings.NavigationY);
 
             manipulationRecognizer = new GestureRecognizer();
             manipulationRecognizer.SetRecognizableGestures(GestureSettings.ManipulationTranslate);
@@ -285,7 +286,7 @@ namespace HoloToolkit.Unity
         private void NavigationRecognizer_NavigationCompletedEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headRay)
         {
             OnNavigation(false, cumulativeDelta);
-            if (ManipulationCompleted != null)
+            if (NavigationCompleted != null)
             {
                 NavigationCompleted();
             }
@@ -303,7 +304,7 @@ namespace HoloToolkit.Unity
         private void NavigationRecognizer_NavigationCanceledEvent(InteractionSourceKind source, Vector3 cumulativeDelta, Ray headRay)
         {
             OnNavigation(false, cumulativeDelta);
-            if (ManipulationCanceled != null)
+            if (NavigationCanceled != null)
             {
                 NavigationCompleted();
             }
