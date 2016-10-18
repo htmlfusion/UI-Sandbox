@@ -122,11 +122,12 @@ public class CustomRotation : MonoBehaviour {
         {
             if (currentAxis == ActiveAxis.y)
             {
-                transform.Rotate(Vector3.up * initialHandToCurrentHandAdjusted.y * -1);
+                transform.Rotate(Vector3.up * initialHandToCurrentHandAdjusted.x * -1);
+                //transform.Rotate(Vector3.up * 5 * -1);
             }
             else if (currentAxis == ActiveAxis.x)
             {
-                transform.Rotate(Vector3.right * initialHandToCurrentHandAdjusted.x * -1);
+                transform.Rotate(Vector3.right * initialHandToCurrentHandAdjusted.y * -1);
             } 
             else
             {

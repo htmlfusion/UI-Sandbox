@@ -7,7 +7,9 @@ Obj/
 Bin/
 UnityGenerated/
 Library/
+Assets/Materials*
 Assets/AssetStoreTools*
+Assets/Models/Materials*
 App/
 UWP/
 project.json

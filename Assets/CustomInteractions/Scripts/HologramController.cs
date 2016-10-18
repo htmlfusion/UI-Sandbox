@@ -19,20 +19,26 @@ public class HologramController : MonoBehaviour {
     [Tooltip("Time in seconds to complete consecutive air taps - Triggers double-tap action")]
     public float doubleTapTolerance = 0.5f;
 
+    [Tooltip("Determines the size buffer added to the hologram collider. This prevents the hologram's collider from breaking through thus blocking gestures.")]
+    public Vector3 colliderBuffer = new Vector3(0.05f, 0.05f, 0.05f);
+
     private float lastTap = 0;
 
-    CustomManipulation cm;
-    CustomRotation cr;
+    private CustomManipulation cm;
+    private CustomRotation cr;
 
     // Use this for initialization
     void Start ()
     {
         if (hologram != null)
         {
+            Debug.Log("here is hologram: " + hologram);
             // wraps a collider that will trigger gestures around the encased hologram
             Vector3 childColSize = hologram.GetComponent<Collider>().bounds.size;
+            Debug.Log("child col size: " + childColSize);
             BoxCollider boxCol = gameObject.GetComponent<BoxCollider>();
-            boxCol.size = childColSize;
+            // colliderBuffer buffers the containers collider to prevent gaze from being intercepted
+            boxCol.size = childColSize + colliderBuffer;
 
             // reference scripts for enabling/disabling
             cm = GetComponent<CustomManipulation>();
@@ -65,16 +71,18 @@ public class HologramController : MonoBehaviour {
                 currentState++;
             }
             EnableCurrentGestureAction();
+            TriggerSoundEffect();
         }
         lastTap = Time.time;
     }
 
-    void EnableCurrentGestureAction()
+    private void EnableCurrentGestureAction()
     {
         if (currentState == ActiveGestureAction.Manipulating)
         {
             cm.enabled = true;
             cr.enabled = false;
+            ToolUI.Instance.ToolState("manipulation");
         }
         else if (currentState == ActiveGestureAction.NavigatingY)
         {
@@ -85,6 +93,14 @@ public class HologramController : MonoBehaviour {
         else if (currentState == ActiveGestureAction.NavigatingX)
         {
             cr.NavigationAxis(CustomRotation.ActiveAxis.x);
+        }
+    }
+
+    private void TriggerSoundEffect()
+    {
+        if (gameObject.GetComponent<AudioSource>())
+        {
+            gameObject.GetComponent<AudioSource>().Play();
         }
     }
 }
